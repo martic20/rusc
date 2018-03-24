@@ -37,6 +37,11 @@
 
 	map.fitBounds(bounds);
 
+
+	map.on('click', function(e) { 
+		var image = L.imageOverlay('assets/headers.jpeg', bounds).addTo(map);
+	});
+
 </script>
 
 
