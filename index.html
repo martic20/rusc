@@ -24,28 +24,47 @@
 
 <script type="text/javascript">
 
-	var bounds = [[0,0], [1570,1910]];
+	//getting data from actual site
+	var api = "https://public-api.wordpress.com/wp/v2/sites/ruscarch.com";
+	var data=null;
+	function getPosts() {
+	  var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	    	data=JSON.parse(this.responseText);
+	      	console.log(data);
+	    }
+	  };
+	  xhttp.open("GET", api+"/posts", true);
+	  xhttp.send();
+	}
 
-	var map = L.map('map', {
+	var images = [
+		{	src:'assets/logo.jpeg',
+			bounds:[[400,1000],[1500,1910]]
+			//, click: loadImg('assets/headers.jpeg')				
+		}
+	 ];	
+	var img = images[0];
+
+	var bounds = [[0,0], [10000,10000]];
+
+	var map = L.map('map', {	
 		crs: L.CRS.Simple,
 		maxZoom: 0,
 		minZoom: -4,
 		maxBounds: bounds
 	});
-
-	var image = L.imageOverlay('assets/logo.jpeg', bounds).addTo(map);
-
 	map.fitBounds(bounds);
 
-
-	map.on('click', function(e) { 
-		var image = L.imageOverlay('assets/headers.jpeg', bounds).addTo(map);
-	});
-
-</script>
-
-
-
-
-
+	function loadImg(href){
+		L.imageOverlay(href, img.bounds,{interactive:true}).
+			addTo(map)
+			//.on('click', (function(){alert("fsd")});)
+			;
+	};
+	//load index
+	loadImg(img.src);
+	getPosts();
+	</script>
 </body></html>
