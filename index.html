@@ -40,14 +40,19 @@
 	}
 
 	var images = [
-		{	src:'assets/logo.jpeg',
-			bounds:[[400,1000],[1500,1910]]
+		{	
+			src:'assets/logo.png',
+			bounds:[[0,0], [800,800]]
 			//, click: loadImg('assets/headers.jpeg')				
-		}
+		},
+		{	
+			src:'assets/headers.png',
+			bounds:[[800,0], [1600,800]]
+			//, click: loadImg('assets/headers.jpeg')				
+		},
 	 ];	
-	var img = images[0];
 
-	var bounds = [[0,0], [10000,10000]];
+	var bounds = [[0,0], [800,800]];
 
 	var map = L.map('map', {	
 		crs: L.CRS.Simple,
@@ -57,14 +62,16 @@
 	});
 	map.fitBounds(bounds);
 
-	function loadImg(href){
-		L.imageOverlay(href, img.bounds,{interactive:true}).
-			addTo(map)
-			//.on('click', (function(){alert("fsd")});)
-			;
+	function loadImg(img){
+		L.imageOverlay(img.src, img.bounds,{interactive:true})
+			.addTo(map)
+			.on('click', function(e){
+				alert(img.src);
+			});
 	};
 	//load index
-	loadImg(img.src);
+	loadImg(images[0]);
+	loadImg(images[1]);
 	getPosts();
 	</script>
 </body></html>
