@@ -47,31 +47,88 @@
 		},
 		{	
 			src:'assets/headers.png',
-			bounds:[[800,0], [1600,800]]
+			bounds:[[600,0], [1300,800]]
 			//, click: loadImg('assets/headers.jpeg')				
 		},
 	 ];	
 
-	var bounds = [[0,0], [800,800]];
-
 	var map = L.map('map', {	
 		crs: L.CRS.Simple,
-		maxZoom: 0,
-		minZoom: -4,
-		maxBounds: bounds
+		maxZoom: 10,
+		minZoom: -4
 	});
-	map.fitBounds(bounds);
+	map.fitBounds([[0,0], [800,800]]);
 
 	function loadImg(img){
 		L.imageOverlay(img.src, img.bounds,{interactive:true})
 			.addTo(map)
-			.on('click', function(e){
-				alert(img.src);
-			});
+			//.on('click', function(e){
+			//	alert(img.src);
+			//})
+			;
 	};
 	//load index
 	loadImg(images[0]);
 	loadImg(images[1]);
 	getPosts();
+
+	map.addEventListener('mousemove', function(ev) {
+	   //console.log(ev.latlng.lat+" "+ ev.latlng.lng);
+	});
+	
+	var polyline = L.polygon([
+	    [0,1000],
+	    [500,1000],
+	    [0,1500],
+	    [0,1000]
+	], {color: 'blue'}).addTo(map).on('click', function(e){
+				alert("fsd");
+			});;
+	
+
+	                var popup = null;
+                function highlightFeature(e) {
+                    var layer = e.target;
+                    layer.setStyle({
+                        weight: 5,
+                        color: '#666',
+                        dashArray: '',
+                        fillOpacity: 0.7
+                    });
+                    if (!L.Browser.ie && !L.Browser.opera) {
+                        layer.bringToFront();
+                    }
+                }
+                function resetHighlight(e) {
+                    geojson.resetStyle(e.target);
+                }
+                function click(e) {
+                    popup = L.popup()
+                                    .setLatLng(e.latlng)
+                                    .setContent("Hexagon ID: "+e.target.feature.properties.id)
+                                    .openOn(map);
+                }
+                function onEachFeature(feature, layer) {
+                    layer.on({
+                        mouseover: highlightFeature,
+                        mouseout: resetHighlight,
+                        click: click
+                    });
+                }
+                function style(feature) {
+                    return {
+                        fillColor: 'blue',
+                        weight: 2,
+                        opacity: 1,
+                        color: 'white',
+                        dashArray: '3',
+                        fillOpacity: 0.5
+                    };
+                }
+                grid = H.hexagonalGrid([10.39466389,43.72234167],5,2, 0.008);
+                var geojson = L.geoJson(grid, {
+                                    style: style,
+                                    onEachFeature: onEachFeature
+                }).addTo(map);
 	</script>
 </body></html>
