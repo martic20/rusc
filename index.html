@@ -25,6 +25,7 @@
 <script type="text/javascript">
 
 	//getting data from actual site
+	/*
 	var api = "https://public-api.wordpress.com/wp/v2/sites/ruscarch.com";
 	var data=null;
 	function getPosts() {
@@ -36,6 +37,20 @@
 	    }
 	  };
 	  xhttp.open("GET", api+"/posts", true);
+	  xhttp.send();
+	}*/
+
+	var api = "https://public-api.wordpress.com/wp/v2/sites/ruscarch.com";
+	var data=null;
+	function getPosts() {
+	  var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	    	data=JSON.parse(this.responseText);
+	      	console.log(data);
+	    }
+	  };
+	  xhttp.open("GET", api+"/tags", true);
 	  xhttp.send();
 	}
 
@@ -86,49 +101,6 @@
 			});;
 	
 
-	                var popup = null;
-                function highlightFeature(e) {
-                    var layer = e.target;
-                    layer.setStyle({
-                        weight: 5,
-                        color: '#666',
-                        dashArray: '',
-                        fillOpacity: 0.7
-                    });
-                    if (!L.Browser.ie && !L.Browser.opera) {
-                        layer.bringToFront();
-                    }
-                }
-                function resetHighlight(e) {
-                    geojson.resetStyle(e.target);
-                }
-                function click(e) {
-                    popup = L.popup()
-                                    .setLatLng(e.latlng)
-                                    .setContent("Hexagon ID: "+e.target.feature.properties.id)
-                                    .openOn(map);
-                }
-                function onEachFeature(feature, layer) {
-                    layer.on({
-                        mouseover: highlightFeature,
-                        mouseout: resetHighlight,
-                        click: click
-                    });
-                }
-                function style(feature) {
-                    return {
-                        fillColor: 'blue',
-                        weight: 2,
-                        opacity: 1,
-                        color: 'white',
-                        dashArray: '3',
-                        fillOpacity: 0.5
-                    };
-                }
-                grid = H.hexagonalGrid([10.39466389,43.72234167],5,2, 0.008);
-                var geojson = L.geoJson(grid, {
-                                    style: style,
-                                    onEachFeature: onEachFeature
-                }).addTo(map);
+	           
 	</script>
 </body></html>

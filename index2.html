@@ -26,6 +26,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.0.0/d3.min.js"></script>
 <script>
 
+
 var width = window.innerWidth,
     height = window.innerHeight;
 
@@ -34,14 +35,21 @@ var width = window.innerWidth,
 var radius = d3.scale.sqrt()
     .range([0, 9]);
 
+
+
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
+
+
+
 var force = d3.layout.force()
     .size([width, height])
-    .charge(-400)
-    .linkDistance(function(d) { return radius(d.source.size) + radius(d.target.size) + 260; });
+    //separació dels nodes
+    .charge(-1200)
+    //llargada de les unions
+    .linkDistance(function(d) { return radius(d.source.size) + radius(d.target.size) + 200; });
 
 d3.json("graph.json", function(error, graph) {
   if (error) throw error;
@@ -69,21 +77,12 @@ d3.json("graph.json", function(error, graph) {
       .attr("class", "node")
       .call(force.drag);
 
-  //node.append("circle")
-  //    .attr("r", function(d) { return radius(d.size); })
-   //   .style("fill", function(d) { return color(d.atom); });
-
   node.append("svg:image")
     .attr('x', -100)
     .attr('y', -100)
-    .attr('width', 200)
-    .attr('height', 200)
+    .attr('width', 300)
+    .attr('height', 300)
     .attr("xlink:href", "assets/headers.png");
-
-  //node.append("text")
-    //  .attr("dy", ".35em")
-      //.attr("text-anchor", "middle")
-      //.text(function(d) { return d.atom; });
 
   function tick() {
     link.selectAll("line")
