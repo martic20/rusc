@@ -68,19 +68,29 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         .attr("class", "node")
         .selectAll("circle")
         .data(graph.nodes)
-        .enter().append("circle")
-        .attr("r", 5)
+        .enter()
+        .append("circle")      
+        .attr("r", 10)
         .attr("fill", function(d) { 
             if ('color' in d)
                 return d.color;
             else
                 return color(d.group); 
-        })
+        })        
         .call(d3v4.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended));
-
+/*
+        node
+        .append("svg:image")
+        .attr("x", function(d) { return -25;})
+        .attr("y", function(d) { return -25;})
+        .attr('width', 200)
+        .attr('height', 200)
+        .attr("xlink:href", "../assets/headers.png")  
+        ;
+*/
       
     // add titles for mouseover blurbs
     node.append("title")
@@ -95,11 +105,9 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
         .force("link", d3v4.forceLink()
                 .id(function(d) { return d.id; })
                 .distance(function(d) { 
-                    return 30;
-                    //var dist = 20 / d.value;
-                    //console.log('dist:', dist);
-
-                    return dist; 
+                    //console.log('dist:', d);
+                    //return 50;                                       
+                    return d.value; 
                 })
               )
         .force("charge", d3v4.forceManyBody())
@@ -124,6 +132,33 @@ function createV4SelectableForceDirectedGraph(svg, graph) {
 
         node.attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
+    }
+
+    function collide(alpha) {
+      var quadtree = d3.geom.quadtree(nodes);
+      return function(d) {
+        var r = d.radius + maxRadius + Math.max(padding, clusterPadding),
+            nx1 = d.x - r,
+            nx2 = d.x + r,
+            ny1 = d.y - r,
+            ny2 = d.y + r;
+        quadtree.visit(function(quad, x1, y1, x2, y2) {
+          if (quad.point && (quad.point !== d)) {
+            var x = d.x - quad.point.x,
+                y = d.y - quad.point.y,
+                l = Math.sqrt(x * x + y * y),
+                r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? padding : clusterPadding);
+            if (l < r) {
+              l = (l - r) / l * alpha;
+              d.x -= x *= l;
+              d.y -= y *= l;
+              quad.point.x += x;
+              quad.point.y += y;
+            }
+          }
+          return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+        });
+      };
     }
 
     var brushMode = false;

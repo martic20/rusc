@@ -19,7 +19,7 @@
     .attr('style', 'width:'+width+'px')
     .attr('style', 'height:'+height+'px'); 
    
-    d3.json('miserables.with-ids.json', function(error, graph) {
+    d3.json('rusc.json', function(error, graph) {
         if (!error) {
             //console.log('graph', graph);
             createV4SelectableForceDirectedGraph(svg, graph);

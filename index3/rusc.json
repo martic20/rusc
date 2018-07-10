@@ -1,0 +1,37 @@
+{
+  "nodes": [
+    {"id": "main", "group": 0},
+    {"id": "b2", "group": 1},
+    {"id": "b3", "group": 1},
+    {"id": "b4", "group": 1},
+    {"id": "b5", "group": 1},
+    {"id": "b2.1", "group": 2},
+    {"id": "b2.2", "group": 2}, 
+    {"id": "b2.3", "group": 2},
+    {"id": "b3.1", "group": 2},
+    {"id": "b3.2", "group": 2}, 
+    {"id": "b3.3", "group": 2},
+    {"id": "b4.1", "group": 2},
+    {"id": "b4.2", "group": 2}, 
+    {"id": "b4.3", "group": 2},
+    {"id": "b4.3.1", "group": 3},
+    {"id": "b2.1.1", "group": 3}
+  ],
+  "links": [
+    {"source": "main", "target": "b2", "value": 40},
+    {"source": "main", "target": "b3", "value": 40},
+    {"source": "main", "target": "b4", "value": 40},
+    {"source": "main", "target": "b5", "value": 40},
+    {"source": "b2", "target": "b2.1", "value": 30},
+    {"source": "b2", "target": "b2.2", "value": 30},
+    {"source": "b2", "target": "b2.3", "value": 30},
+    {"source": "b3", "target": "b3.1", "value": 30},
+    {"source": "b3", "target": "b3.2", "value": 30},
+    {"source": "b3", "target": "b3.3", "value": 30},
+    {"source": "b4", "target": "b4.1", "value": 30},
+    {"source": "b4", "target": "b4.2", "value": 30},
+    {"source": "b4", "target": "b4.3", "value": 30},
+    {"source": "b4.3", "target": "b4.3.1", "value": 30},
+    {"source": "b2.1", "target": "b2.1.1", "value": 30}           
+  ]
+}
